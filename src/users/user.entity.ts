@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   AfterInsert,
   AfterUpdate,
-  AfterRemove,
+  BeforeRemove,
 } from 'typeorm';
 
 @Entity()
@@ -28,8 +28,8 @@ export class User {
     console.log(`Updated user with id: ${this.id}`);
   }
 
-  @AfterRemove()
+  @BeforeRemove()
   logRemove() {
-    console.log(`Removed user with id: ${this.id}`);
+    console.log(`Removing user with id: ${this.id}`);
   }
 }
