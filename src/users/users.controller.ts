@@ -43,6 +43,11 @@ export class UsersController {
     return user;
   }
 
+  @Delete('/signout')
+  signout(@Session() session: any) {
+    session.userId = null;
+  }
+
   @Get()
   findUsers() {
     return this.usersService.find();
