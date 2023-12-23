@@ -3,7 +3,6 @@ import { UsersController } from './users.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
-import { NotFoundException } from '@nestjs/common';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -26,12 +25,10 @@ describe('UsersController', () => {
           email: 'asdf@gmail.com',
           password: 'asdf',
         } as User),
-      // update: () => {},
-      // remove: () => {},
     };
     fakeAuthService = {
-      // signup: () => {},
-      // signin: () => {},
+      signin: (email: string, password: string) =>
+        Promise.resolve({ id: 1, email, password } as User),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -67,5 +64,16 @@ describe('UsersController', () => {
 
     expect(user).toBeDefined();
     expect(user.id).toEqual(1);
+  });
+
+  it('signin update session object and return user', async () => {
+    const session = { userId: -1 };
+    const user = await controller.signin(
+      { email: 'asdf@gmail.com', password: 'asdf' },
+      session,
+    );
+
+    expect(user.id).toEqual(1);
+    expect(session.userId).toEqual(1);
   });
 });
