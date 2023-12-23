@@ -55,9 +55,35 @@ describe('AuthService', () => {
     );
   });
 
-  it('throws if signin is called with an usused email', async () => {
+  it('throws if signin is called with an usused email', () => {
     expect(service.signin('asdf@gmail.com', 'asdf')).rejects.toThrow(
       NotFoundException,
     );
+  });
+
+  it('throws if invalid password is provided', () => {
+    fakeUsersService.findOneByEmail = (email) =>
+      Promise.resolve({
+        id: 1,
+        email,
+        password: 'test',
+      } as User);
+
+    expect(service.signin('asdf@gmail.com', 'asdf')).rejects.toThrow(
+      BadRequestException,
+    );
+  });
+
+  it('returns a user if correct password is provided', async () => {
+    fakeUsersService.findOneByEmail = (email) =>
+      Promise.resolve({
+        id: 1,
+        email,
+        password:
+          '3dc0d715abc5c8e4.ab2022de0e0dc412ad721ded489adc3a5d95e0463ddc7d7e0f7daa8365fee7f1',
+      } as User);
+
+    const user = await service.signin('asdf@gmail.com', 'asdf');
+    expect(user).toBeDefined();
   });
 });
