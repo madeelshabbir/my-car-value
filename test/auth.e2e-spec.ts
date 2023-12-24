@@ -28,4 +28,24 @@ describe('AppController (e2e)', () => {
         expect(email).toEqual(givenEmail);
       });
   });
+
+  it('signup as a new user then get current logged in user', async () => {
+    const givenEmail = 'asdf@gmail.com';
+
+    const res = await request(app.getHttpServer())
+      .post('/auth/signup')
+      .send({ email: givenEmail, password: 'asdf' })
+      .expect(201);
+
+    const cookie = res.get('Set-Cookie');
+
+    return request(app.getHttpServer())
+      .get('/auth/whoami')
+      .set('Cookie', cookie)
+      .expect(200)
+      .then((res) => {
+        const { email } = res.body;
+        expect(email).toEqual(givenEmail);
+      });
+  });
 });
