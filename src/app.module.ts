@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/user.entity';
-import { Report } from './reports/report.entity.';
+import { Report } from './reports/report.entity';
 import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
