@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor {
-  constructor(private userService: UsersService) {}
+  constructor(private usersService: UsersService) {}
 
   async intercept(
     context: ExecutionContext,
@@ -19,7 +19,7 @@ export class CurrentUserInterceptor implements NestInterceptor {
     const { userId } = request.session || {};
 
     if (userId) {
-      const user = await this.userService.findOne(userId);
+      const user = await this.usersService.findOne(userId);
       request.currentUser = user;
     }
 
